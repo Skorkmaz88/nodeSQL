@@ -1,0 +1,27 @@
+{
+  "name": "node_sql",
+  "version": "0.0.1",
+  "description": "A node.js implementation for MySQL data extraction ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Skorkmaz88/nodeSQL.git"
+  },
+  "keywords": [
+    "node.js",
+    "node",
+    "mysql"
+  ],
+  "author": "Semih Korkmaz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Skorkmaz88/nodeSQL/issues"
+  },
+  "homepage": "https://github.com/Skorkmaz88/nodeSQL#readme",
+  "dependencies": {
+    "mysql": "^2.12.0"
+  }
+}
