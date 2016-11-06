@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Skorkmaz88/nodeSQL#readme",
   "dependencies": {
+    "csv": "^1.1.0",
     "mysql": "^2.12.0"
   }
 }
