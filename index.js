@@ -2,8 +2,10 @@
 // and retrive the data (https://github.com/mysqljs)
 var express    = require('express');
 var mysql      = require('mysql');
+var bodyParser = require('body-parser');
 var app        = express();
 var port       = process.env.PORT || 3000;
+
 
 // Establishing the connection
 // you can save this data in a safe place rather than explicitly type here
@@ -17,6 +19,16 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
+
+// Set the server
+// get information from html forms
+app.use(bodyParser());
+
+// set up ejs for templating
+app.set('view engine', 'ejs');
+
+require('./app/routes.js')(app);
+
 
 var webServer = app.listen(port);
 console.log('Server is running using port :' + port);
