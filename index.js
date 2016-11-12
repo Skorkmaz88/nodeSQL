@@ -1,7 +1,9 @@
 // We use mysqljs library for establishing the connection
 // and retrive the data (https://github.com/mysqljs)
+var express    = require('express');
 var mysql      = require('mysql');
-
+var app        = express();
+var port       = process.env.PORT || 3000;
 
 // Establishing the connection
 // you can save this data in a safe place rather than explicitly type here
@@ -15,3 +17,6 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
+
+var webServer = app.listen(port);
+console.log('Server is running using port :' + port);
