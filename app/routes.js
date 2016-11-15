@@ -4,13 +4,14 @@ var path = require("path")
 var mime = require('mime');
 
 
-module.exports = function(app) {
+module.exports = function(app,connection) {
   app.get('/', function(req, res) {
        res.render('index.ejs',  { }); // load the index.ejs file
    });
    // Website endpoinsts for html demos
    app.get('/generateCSV', function(req,res)
  {
+   console.log(connection.threadId);
    res.render('csv.ejs', {});
  });
  /*
@@ -29,6 +30,13 @@ module.exports = function(app) {
   console.log(path.join(__dirname,"../data.csv"));
 
   var ws = fs.createWriteStream("data.csv");
+  connection.query('INSERT INTO posts SET ?', {title: 'test'}, function(err, result) {
+  if (err) throw err;
+
+  console.log(result.insertId);
+});
+
+
  /*csv
     .write([
         {a: "a1", b: "b1"},

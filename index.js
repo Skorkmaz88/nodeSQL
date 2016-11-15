@@ -18,7 +18,14 @@ var connection = mysql.createConnection({
   database : 'employees' // which database you are connecting
 });
 
-connection.connect();
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+
+  console.log('connected as id ' + connection.threadId);
+});
 
 // Set the server
 // get information from html forms
@@ -27,7 +34,8 @@ app.use(bodyParser());
 // set up ejs for templating
 app.set('view engine', 'ejs');
 
-require('./app/routes.js')(app);
+require('./app/routes.js')(app,connection);
+
 
 
 var webServer = app.listen(port);
