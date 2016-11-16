@@ -14,64 +14,59 @@ module.exports = function(app,connection) {
    console.log(connection.threadId);
    res.render('csv.ejs', {});
  });
- /*
- app.get('/generateTSV', function(req,res)
- {
-   res.render('tsv.ejs', {});
 
- });*/
  // API endpoinsts for POST
- app.post('/generateCSV', function(req,res)
+ // Get all deparment managers, select * example
+ app.post('/generateCSV/departmentManagers', function(req,res)
 {
 
-  var CSV_STRING = '';
+  var CSV_STRING = '\uFEFF';
   // Database query from user
   var query = req.body.query;
   console.log(path.join(__dirname,"../data.csv"));
 
   var ws = fs.createWriteStream("data.csv");
-  connection.query('INSERT INTO posts SET ?', {title: 'test'}, function(err, result) {
+  var dataArray = [];
+  connection.query('SELECT * FROM employees.dept_manager', function(err, rows, fields) {
   if (err) throw err;
 
-  console.log(result.insertId);
-});
+   //TODO add fields to headers ?
+   // prepare the csv
+
+   //var data = JSON.parse(rows);
+
+   for(var i = 0; i < rows.length; i++)
+   {
+     if(i === 0)
+     {
+
+        dataArray.push([""+rows[i].emp_no, rows[i].dept_no ]);
+     }
+     else
+         dataArray.push([""+rows[i].emp_no, rows[i].dept_no ]);
+      CSV_STRING += rows[i].emp_no +"," + rows[i].dept_no+"\n";
+   }
+   csv
+    .writeToPath("my.csv", dataArray, {headers: true})
+    .on("finish", function(){
+        console.log("done!");
+        console.log(dataArray[0][0]);
+        res.status(200);
+        var mimetype = mime.lookup(path.join(__dirname,"../my.csv"));
+
+        res.setHeader('Content-disposition', 'attachment; filename=my.csv');
+        res.setHeader('Content-type', mimetype);
+
+         res.sendFile(path.join(__dirname,"../my.csv"));
+    });
 
 
- /*csv
-    .write([
-        {a: "a1", b: "b1"},
-        {a: "a2", b: "b2"}
-    ], {headers: true})
-    .pipe(ws);
-*/
-csv
- .writeToPath("my.csv", [
-     ["a", "b"],
-     ["a1", "b1"],
-     ["a2", "b2"]
- ], {headers: true})
- .on("finish", function(){
-     console.log("done!");
-     res.status(200);
-     var mimetype = mime.lookup(path.join(__dirname,"../my.csv"));
-
-     res.setHeader('Content-disposition', 'attachment; filename=my.csv');
-      res.setHeader('Content-type', mimetype);
-
-      res.sendFile(path.join(__dirname,"../my.csv"));
- });
-
-  //  res.setHeader("Content-Type", mime.lookup(url)); //Solution!
+   });
 
 
-});
-/*app.post('/generateTSV', function(req,res)
-{
-  res.status(200)
-  res.send('ok');
 
 });
-*/
+
 }
 
 /////////////////////////////////////////
